@@ -1,0 +1,34 @@
+project:
+  type: website
+
+website:
+  title: "AZ"
+  description: "Personal blog with content on data, ML, AI and startups"
+  site-url: https://www.zverianskii.com
+  navbar:
+    left:
+      - href: index.ipynb
+        text: Home
+      - href: posts
+        text: Posts
+    right:
+      - icon: rss
+        href: index.xml
+  page-footer:
+    left: "(c) AZ, 2022–"
+  twitter-card: true
+  open-graph: true
+  google-analytics: "666"
+execute:
+  freeze: auto
+format:
+  html:
+    theme:
+      - sketchy
+      - custom.scss
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    toc_smooth_scroll: true
+    toc_highlight: true
+    fig-align: center    
