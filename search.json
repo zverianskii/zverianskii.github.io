@@ -1,0 +1,37 @@
+[
+  {
+    "objectID": "posts/CLT_assumptions.html",
+    "href": "posts/CLT_assumptions.html",
+    "title": "Assumtions of CLT",
+    "section": "",
+    "text": "The Central Limit Theorem serves as the foundation for many aspects of statistics, including the z-test, student’s t-test, and Welch’s t-test. But, how frequently do you consider its assumptions? Have you ever verified them?\nEven a minor deviation from these assumptions can result in a situation where the methodology becomes unusable.\nMathematical concepts are often written in a complex way that can be challenging to decipher and understand. That’s why my aim is to break down these core principles and present them to you in simple, clear English with examples.\nLet’s start with a definition from wikipedia:\nfrom IPython.display import display, Image as dImage\nfrom PIL import Image\nimport scipy\nimport seaborn as sns\nimport matplotlib.pyplot as plt\nimport numpy as np\npath=\"./resources/images/screen4.png\"\ndisplay(Image.open(path))\nit turns out 3 major assumptions are hidden in 8 symbols: “&lt;∞” and “i.i.d.”:"
+  },
+  {
+    "objectID": "posts/CLT_assumptions.html#key-takeaways",
+    "href": "posts/CLT_assumptions.html#key-takeaways",
+    "title": "Assumtions of CLT",
+    "section": "Key Takeaways:",
+    "text": "Key Takeaways:\n\nInfinite variance occurs more frequently than you might think. Stay aware.\nIt’s important to understand the data generating process, as this can provide some level of guarantee not only for independence but also for identically distributed data.\nKnow your data. This knowledge is key to effective analysis and interpretation.\n\nHappy coding!"
+  },
+  {
+    "objectID": "posts/index.html",
+    "href": "posts/index.html",
+    "title": "My notes",
+    "section": "",
+    "text": "Speed Up Python with PyPy\n\n\n\n\n\n\npython\n\n\ncode\n\n\n\n\n\n\n\n\n\nFeb 22, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nAssumtions of CLT\n\n\n\n\n\n\nmath\n\n\nclt\n\n\n\n\n\n\n\n\n\nMay 22, 2023\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Aleks",
+    "section": "",
+    "text": "I am good qqq Personal life"
+  },
+  {
+    "objectID": "posts/speedup_python_with_pypy.html",
+    "href": "posts/speedup_python_with_pypy.html",
+    "title": "Speed Up Python with PyPy",
+    "section": "",
+    "text": "As an Analyst, you’re likely familiar with the traditional python development cycle:\n\nCompose some code.\nRun the programmed script.\nReview the outputs (via print statements, logs, etc.)\nRefine and optimize.\n\nBut when your execution time is sluggish, this cycle becomes a frustratingly slow process.\nThere’s a widespread myth that Python, by default, is slow, and little can be done to change that. But I’m here to dispel that myth.\nThe truth is, Python’s speed can be boosted by orders of magnitude without much difficulty. The key lies in understanding how to leverage the right tools and techniques, such as PyPy, to streamline your Python development process. Why PyPy, you ask? Well, because at times, a simple shift in the manner you execute scripts can significantly speed up the process.\nThe best part is, there’s no need to spend valuable time rewriting your code. It’s essentially a free lunch.\nStay tuned as we delve deeper into the world of Python and PyPy, revealing how you can enhance your coding experience and execute scripts faster than ever before.\nYou start by writing your Python code, which is then compiled into an internal format known as “Python bytecode”. Each bytecode statement is subsequently translated into a language your specific machine can comprehend, one statement at a time.\n\n\nCode\nfrom IPython.display import display, Image as dImage\nfrom PIL import Image\nimport scipy\nimport seaborn as sns\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n\n\n\nCode\npath=\"../resources/images/a5714f29-c749-419b-a73b-d48dae184a56.png\"\ndisplay(Image.open(path))\n\n\n\n\n\n\n\n\n\nAnd yes, when your code involves a loop the interpretation/translation process leads to significant repetition.\nThat’s where PyPy and its Just-In-Time (JIT) compiler come into play. Consider PyPy as a more advanced version of a bytecode executor. It’s like an observant supervisor monitoring the process. When it notices a fragment of code undergoing repeated translation, it leaps into action to optimize it.\nHow does it do this? It’s quite ingenious, actually. PyPy employs tactics such as type placement and compilation to prevent unnecessary repetition, hence speeding up the execution process.\nIn essence, PyPy is a powerful tool that can help you eliminate redundancy and optimize your code’s performance. So, the next time you find your code stuck in the endless loop of translation, remember PyPy might just be the solution you need.\nHere is a quick example:\n\n\nCode\nimport random\n\nrandom.seed(1)\n\ndef main():\n    N = 1_000_000\n    res = [0]*N\n    for i in range(N):\n        dat = (random.randint(0,10) for x in range(100))\n        res[i] = sum(dat) / N\n    print(res[:10])\n\n\nIf we ran it with CPython we get:\ntime python main.py\n[0.000528, 0.000502, 0.000493, 0.000463, 0.000477, 0.000524, 0.000534, 0.000549, 0.000478, 0.000482]\npython main.py  19,25s user 0,02s system 99% cpu 19,271 total\nand the same with PyPy:\ntime python main.py\n[0.000528, 0.000502, 0.000493, 0.000463, 0.000477, 0.000524, 0.000534, 0.000549, 0.000478, 0.000482]\npython main.py  2,39s user 0,03s system 100% cpu 2,420 total\nThe results speak for themselves - we achieved a speed increase of nine times using PyPy. However, it’s important to note a couple of factors:\n\nIf your code primarily involves numpy operations, this optimization technique may not yield significant improvements.\nPyPy doesn’t fully support every element of CPython, meaning some functionalities may not work as intended.\n\nSo, what’s the takeaway here?\nIf your code is predominantly written in Python and comprises a good number of loops, you should definitely give PyPy a shot. It could result in easy gains and a considerable boost in efficiency.\nAnd the best part? The transition from CPython to PyPy is a breeze. In my experience, it took just two commands to make the switch. You can read more about my setup here.\nI genuinely hope that the insights shared here will prove beneficial in your coding journey, saving you precious time and making your development process more efficient.\nHappy coding!"
+  }
+]
