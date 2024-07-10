@@ -1,5 +1,47 @@
 [
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Alex Zverianskii",
+    "section": "",
+    "text": "Hey, I am building things around AI for more than 15 years in businesses of diverse sizes, ranging from 200k MAU to 100mln MAU. I’ve engineered hundreds of real-time models, prepared data for an IPO, and built three companies from the ground up, with one successful exit. Read my stories on python, data, AI and startups!"
+  },
+  {
+    "objectID": "hire.html",
+    "href": "hire.html",
+    "title": "About Me",
+    "section": "",
+    "text": "For the last 16 years in the industry, I have helped many companies with their data needs:\nAdditionally, I have created various projects myself, including:"
+  },
+  {
+    "objectID": "hire.html#common-issues-faced-by-my-clients",
+    "href": "hire.html#common-issues-faced-by-my-clients",
+    "title": "About Me",
+    "section": "Common Issues Faced by My Clients:",
+    "text": "Common Issues Faced by My Clients:\n\n“Everyone claims to be data-driven. I want my team to adopt this approach too, with everything scientifically proven. What are the best tools?” You might not need them at all.\n“I’m worried that without a data strategy, we won’t be able to grow. We need to build a data lake, warehouse, and establish data stewardship.” Don’t let marketing-driven FOMO distract you from core business.\n“Vector search is the new gold standard; we need it ASAP.” No, you don’t—or at least not with the latest shiny database that overpromises.\n“Our company is only three years old, but we’ve already changed our data stack four times. Now the tech team wants to switch again.” It might be time to thoroughly evaluate the trade-offs before making another move.\n“I don’t want to be just a middleman between the user and the OpenAI API.” Let’s brainstorm.\n“We can’t create our own models; we don’t have billions of dollars and access to half of the internet’s data.” You don’t need to.\n“We change prompts but have no idea how to measure the difference without A/B testing, which takes too long and slows us down.” Effective evaluation techniques are key to speeding up development on top of LLMs; you’re not alone in facing this challenge."
+  },
+  {
+    "objectID": "hire.html#hiring-options",
+    "href": "hire.html#hiring-options",
+    "title": "About Me",
+    "section": "Hiring options",
+    "text": "Hiring options\n\nPersonal Data Therapy for a Founder\nI help you become more comfortable with data decisions on a day-to-day basis.\n\n\nGroup Data Therapy for a Team\nWe conduct brainstorms and business-tech dialogues to highlight issues, find solutions, and create strategies.\n\n\nSpecific Topic Training Session\nExpand your team’s knowledge in a requested area.\n\n\nProject-Based Consulting\nI join your team for the project and take responsibility for the results."
+  },
+  {
+    "objectID": "hire.html#where-to-find-me",
+    "href": "hire.html#where-to-find-me",
+    "title": "About Me",
+    "section": "Where to find me",
+    "text": "Where to find me"
+  },
+  {
+    "objectID": "posts/index.html",
+    "href": "posts/index.html",
+    "title": "My notes",
+    "section": "",
+    "text": "Speed Up Python with PyPy\n\n\n\n\n\n\npython\n\n\ncode\n\n\n\n\n\n\n\n\n\nFeb 22, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nAssumtions of CLT\n\n\n\n\n\n\nmath\n\n\nclt\n\n\nab\n\n\n\n\n\n\n\n\n\nMay 22, 2023\n\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "posts/CLT_assumptions.html",
     "href": "posts/CLT_assumptions.html",
     "title": "Assumtions of CLT",
@@ -12,20 +54,6 @@
     "title": "Assumtions of CLT",
     "section": "Key Takeaways:",
     "text": "Key Takeaways:\n\nInfinite variance occurs more frequently than you might think. Stay aware.\nIt’s important to understand the data generating process, as this can provide some level of guarantee not only for independence but also for identically distributed data.\nKnow your data. This knowledge is key to effective analysis and interpretation.\n\nHappy coding!"
-  },
-  {
-    "objectID": "posts/index.html",
-    "href": "posts/index.html",
-    "title": "My notes",
-    "section": "",
-    "text": "Speed Up Python with PyPy\n\n\n\n\n\n\npython\n\n\ncode\n\n\n\n\n\n\n\n\n\nFeb 22, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nAssumtions of CLT\n\n\n\n\n\n\nmath\n\n\nclt\n\n\nab\n\n\n\n\n\n\n\n\n\nMay 22, 2023\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Aleks",
-    "section": "",
-    "text": "I am good qqq Personal life"
   },
   {
     "objectID": "posts/speedup_python_with_pypy.html",
