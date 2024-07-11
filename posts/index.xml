@@ -30,7 +30,6 @@
 <p>There’s a widespread myth that Python, by default, is slow, and little can be done to change that. But I’m here to dispel that myth.</p>
 <p>The truth is, Python’s speed can be boosted by orders of magnitude without much difficulty. The key lies in understanding how to leverage the right tools and techniques, such as PyPy, to streamline your Python development process. Why PyPy, you ask? Well, because at times, <strong>a simple shift in the manner you execute scripts can significantly speed up the process</strong>.</p>
 <p>The best part is, there’s no need to spend valuable time rewriting your code. It’s essentially a free lunch.</p>
-<p>Stay tuned as we delve deeper into the world of Python and PyPy, revealing how you can enhance your coding experience and execute scripts faster than ever before.</p>
 <p>You start by writing your Python code, which is then compiled into an internal format known as “Python bytecode”. Each bytecode statement is subsequently translated into a language your specific machine can comprehend, one statement at a time.</p>
 <div id="f469e00e-078a-4650-b511-587c9a9be397" class="cell" data-execution_count="1">
 <details class="code-fold">
@@ -89,7 +88,7 @@ font-style: inherit;">open</span>(path))</span></code></pre></div>
 </div>
 <p>And yes, when your code involves a loop the interpretation/translation process leads to significant repetition.</p>
 <p>That’s where PyPy and its Just-In-Time (JIT) compiler come into play. Consider PyPy as a more advanced version of a bytecode executor. It’s like an observant supervisor monitoring the process. When it notices a fragment of code undergoing repeated translation, it leaps into action to optimize it.</p>
-<p>How does it do this? It’s quite ingenious, actually. PyPy employs tactics such as type placement and compilation to prevent unnecessary repetition, hence speeding up the execution process.</p>
+<p>How does it do this? PyPy employs tactics such as type placement and compilation to prevent unnecessary repetition, hence speeding up the execution process.</p>
 <p><strong>In essence, PyPy is a powerful tool that can help you eliminate redundancy and optimize your code’s performance.</strong> So, the next time you find your code stuck in the endless loop of translation, remember PyPy might just be the solution you need.</p>
 <p>Here is a quick example:</p>
 <div id="db590090-ee44-405e-8136-2daaf31acc39" class="cell">
@@ -178,7 +177,7 @@ python main.py  2,39s user 0,03s system 100% cpu 2,420 total</code></pre>
 </ul>
 <p>So, what’s the takeaway here?</p>
 <p>If your code is predominantly written in Python and comprises a good number of loops, you should definitely give PyPy a shot. It could result in easy gains and a considerable boost in efficiency.</p>
-<p>And the best part? The transition from CPython to PyPy is a breeze. In my experience, it took just two commands to make the switch. You can read more about my setup here.</p>
+<p>And the best part? The transition from CPython to PyPy is a breeze. In my experience, it took just two commands to make the switch.</p>
 <p><strong>I genuinely hope that the insights shared here will prove beneficial in your coding journey, saving you precious time and making your development process more efficient.</strong></p>
 <p>Happy coding!</p>
 
