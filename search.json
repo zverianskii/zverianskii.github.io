@@ -1,12 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Alex Zverianskii",
-    "section": "",
-    "text": "Hey, I am building things around AI for more than 15 years in businesses of diverse sizes, ranging from 200k MAU to 100mln MAU. I’ve engineered hundreds of real-time models, prepared data for an IPO, and built three companies from the ground up, with one successful exit. Read my stories on python, data, AI and startups!"
-  },
-  {
     "objectID": "hire.html",
     "href": "hire.html",
     "title": "About Me",
@@ -35,11 +28,53 @@
     "text": "Where to find me\n\n\nTwitter\n\n\nGitHub\n\n\nalex+consulting@zverianskii.com"
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Alex Zverianskii",
+    "section": "",
+    "text": "Hey, I am building things around AI for more than 15 years in businesses of diverse sizes, ranging from 200k MAU to 100mln MAU. I’ve engineered hundreds of real-time models, prepared data for an IPO, and built three companies from the ground up, with one successful exit. Read my stories on python, data, AI and startups!"
+  },
+  {
+    "objectID": "posts/master_power_law.html",
+    "href": "posts/master_power_law.html",
+    "title": "Master Power Law To Avoid Disasters",
+    "section": "",
+    "text": "import scipy\nimport seaborn as sns\nimport matplotlib.pyplot as plt\nimport numpy as np\nimport pandas as pd\nimport warnings\nwarnings.filterwarnings('ignore')"
+  },
+  {
+    "objectID": "posts/master_power_law.html#introduction",
+    "href": "posts/master_power_law.html#introduction",
+    "title": "Master Power Law To Avoid Disasters",
+    "section": "Introduction",
+    "text": "Introduction\nRemember “Long-Term Capital Management” story? In essence, they applied the Gaussian distribution for forecasting market volatility. According to the Gaussian distribution, the likelihood of an event occurring that is 10 standard deviations away from the mean is 1.3x10⁻²³. However, under a power law with an exponent of 2, this probability increases to 0.5%!\nReal-life proved they were wrong:\n\n\n\nwikimedia lctm pricing\n\n\nThis situation serves as a strong motivator to delve into more complex distributions than the Gaussian.\nI have been in the data analysis field for 15 years.\nDuring this time, I’ve helped companies of all sizes navigate risks, developed predictive models, and performed many AB-tests.\nBut do you want to know a secret?\nI actually use the same 3 techniques every time:"
+  },
+  {
+    "objectID": "posts/master_power_law.html#technique-1-identifying-power-law-dynamic",
+    "href": "posts/master_power_law.html#technique-1-identifying-power-law-dynamic",
+    "title": "Master Power Law To Avoid Disasters",
+    "section": "Technique 1: Identifying Power Law Dynamic",
+    "text": "Technique 1: Identifying Power Law Dynamic\n\nPlot your data on a log-log scale. A straight line indicates a power law distribution.\nRemember that fewer points at the far right tail can make it tricky to draw definitive conclusions.\nUse your log-log plot to calculate the power law’s exponent.\n\nFollow these steps, and you’ll be able to identify power law distribution accurately.\nHere is an example with exponential distribution (non straight line on the left):\n\nnum_samples = 1000\ndat = sorted(scipy.stats.expon.rvs(1.5, size=num_samples))\nx = range(len(dat))\nfig, ax = plt.subplots(1,2, figsize=(15, 7))\ng = sns.distplot(dat, ax=ax[0])\ng.set_title(\"Original\")\ng = sns.scatterplot(x=np.log(x), y=np.log(dat), ax=ax[1])\ng.set_title(\"Log-log\")\ng.set(ylim=(min(np.log(dat)), None))\n\n\n\n\n\n\n\n\nBut with Powerlaw we have:\n\ndat = sorted(scipy.stats.powerlaw.rvs(0.1, size=num_samples))\nx = range(len(dat))\nfig, ax = plt.subplots(1,2, figsize=(15, 7))\ng = sns.distplot(dat, ax=ax[0])\ng.set_title(\"Original\")\ng = sns.scatterplot(x=np.log(x), y=np.log(dat), ax=ax[1])\ng.set_title(\"Log-log\")\ng.set(ylim=(min(np.log(dat)), None))"
+  },
+  {
+    "objectID": "posts/master_power_law.html#technique-2-acknowledging-real-world-limits",
+    "href": "posts/master_power_law.html#technique-2-acknowledging-real-world-limits",
+    "title": "Master Power Law To Avoid Disasters",
+    "section": "Technique #2: Acknowledging Real-World Limits",
+    "text": "Technique #2: Acknowledging Real-World Limits\nWhen you identify Powerlaw but still need to perform AB-test, there are some tricks you can perform, one of them is to consider real-world constraints, like market collapses or physical boundaries. In such cases, a truncated power law distribution may be more accurate, and with a propper boundary it’s mean can even converge to normal.\nBy considering these factors and incorporating them into your analysis, you’ll achieve more realistic assessments.\nHere’s an example, suppose we’re examining annual incomes. For decision-making purposes, we’re primarily interested in the majority and not particularly focused on individuals with exceptionally high incomes. Therefore, we’ve set a cap:\n\nN = 1000\nnum_samples = 2000\ndat = scipy.stats.pareto.rvs(.8, size=(N, num_samples))\nd = dat.mean(axis=0)\ndat[dat &gt; 200] = 200\nfig, ax = plt.subplots(1,2, figsize=(12, 5))\ng = sns.histplot(d, ax=ax[0], bins=20)\ng.set_title(\"Mean distibution without cap\")\ng = sns.histplot(dat.mean(axis=0), ax=ax[1], bins=20)\ng.set_title(\"With cap\")\n\nText(0.5, 1.0, 'With cap')"
+  },
+  {
+    "objectID": "posts/master_power_law.html#technique-3-limitations-of-historical-data",
+    "href": "posts/master_power_law.html#technique-3-limitations-of-historical-data",
+    "title": "Master Power Law To Avoid Disasters",
+    "section": "Technique #3: Limitations of Historical Data",
+    "text": "Technique #3: Limitations of Historical Data\nRealize that learning from history can be challenging if the data follows power law.\nRemember that more data often means more extreme values.\nAlways consider the possibility of more extreme events beyond what your current data shows.\nA power law is a type of heavy-tailed distribution, indicating that the likelihood of rare events is significantly higher compared to a Gaussian distribution. Depending on the circumstances, this detail may or may not be crucial. For instance, while analyzing A/B testing on button colors, it might be negligible. However, it becomes vital when modeling financial risks.\nHappy coding!"
+  },
+  {
     "objectID": "posts/index.html",
     "href": "posts/index.html",
     "title": "My notes",
     "section": "",
-    "text": "Speed Up Python with PyPy\n\n\n\n\n\n\npython\n\n\ncode\n\n\n\n\n\n\n\n\n\nFeb 22, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nAssumtions of CLT\n\n\n\n\n\n\nmath\n\n\nclt\n\n\nab\n\n\n\n\n\n\n\n\n\nMay 22, 2023\n\n\n\n\n\n\nNo matching items"
+    "text": "Speed Up Python with PyPy\n\n\n\n\n\n\npython\n\n\ncode\n\n\n\n\n\n\n\n\n\nFeb 22, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nMaster Power Law To Avoid Disasters\n\n\n\n\n\n\nmath\n\n\nclt\n\n\nab\n\n\n\n\n\n\n\n\n\nFeb 21, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nAssumtions of CLT\n\n\n\n\n\n\nmath\n\n\nclt\n\n\nab\n\n\n\n\n\n\n\n\n\nMay 22, 2023\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/CLT_assumptions.html",

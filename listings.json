@@ -3,6 +3,7 @@
     "listing": "/posts/index.html",
     "items": [
       "/posts/speedup_python_with_pypy.html",
+      "/posts/master_power_law.html",
       "/posts/CLT_assumptions.html"
     ]
   }
