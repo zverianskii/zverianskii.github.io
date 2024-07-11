@@ -11,9 +11,11 @@ website:
         text: Home
       - href: posts
         text: Posts
+      - href: hire.ipynb
+        text: Hire me
     right:
       - icon: rss
-        href: index.xml
+        href: posts/index.xml
   page-footer:
     left: "(c) AZ, 2022–"
   twitter-card: true
@@ -24,7 +26,7 @@ execute:
 format:
   html:
     theme:
-      - sketchy
+      - lux
       - custom.scss
     toc: true
     toc_depth: 3
