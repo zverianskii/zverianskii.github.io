@@ -1,38 +1,73 @@
 [
   {
-    "objectID": "hire.html",
-    "href": "hire.html",
-    "title": "About Me",
+    "objectID": "posts/python_without_gil.html",
+    "href": "posts/python_without_gil.html",
+    "title": "Python 3.13: Four-times faster or three times slower?",
     "section": "",
-    "text": "For the last 16 years in the industry, I have helped many companies with their data needs:\nAdditionally, I have created various projects myself, including:"
+    "text": "Python 3.13 will be available without the Global Interpreter Lock (GIL). As a heavy user of the Python ecosystem, I’m looking forward to experimenting with it. Theoretically, this change opens up significant opportunities for faster execution, reduced memory footprint, lower latency in switching, and better communication between threads. It offers true parallelism and improved performance for multi-threaded, multi-core applications. Are we there yet?\nWhen I saw Simon Willison’s post on this topic with x4 improvements I decided to try my self."
   },
   {
-    "objectID": "hire.html#common-issues-faced-by-my-clients",
-    "href": "hire.html#common-issues-faced-by-my-clients",
-    "title": "About Me",
-    "section": "Common Issues Faced by My Clients:",
-    "text": "Common Issues Faced by My Clients:\n\n“Everyone claims to be data-driven. I want my team to adopt this approach too, with everything scientifically proven. What are the best tools?” You might not need them at all.\n“I’m worried that without a data strategy, we won’t be able to grow. We need to build a data lake, warehouse, and establish data stewardship.” Don’t let marketing-driven FOMO distract you from core business.\n“Vector search is the new gold standard; we need it ASAP.” No, you don’t—or at least not with the latest shiny database that overpromises.\n“Our company is only three years old, but we’ve already changed our data stack four times. Now the tech team wants to switch again.” It might be time to thoroughly evaluate the trade-offs before making another move.\n“I don’t want to be just a middleman between the user and the OpenAI API.” Let’s brainstorm.\n“We can’t create our own models; we don’t have billions of dollars and access to half of the internet’s data.” You don’t need to.\n“We change prompts but have no idea how to measure the difference without A/B testing, which takes too long and slows us down.” Effective evaluation techniques are key to speeding up development on top of LLMs; you’re not alone in facing this challenge."
-  },
-  {
-    "objectID": "hire.html#hiring-options",
-    "href": "hire.html#hiring-options",
-    "title": "About Me",
-    "section": "Hiring options",
-    "text": "Hiring options\n\nPersonal Data Therapy for a Founder\nI help you become more comfortable with data decisions on a day-to-day basis.\n\n\nGroup Data Therapy for a Team\nWe conduct brainstorms and business-tech dialogues to highlight issues, find solutions, and create strategies.\n\n\nSpecific Topic Training Session\nExpand your team’s knowledge in a requested area.\n\n\nProject-Based Consulting\nI join your team for the project and take responsibility for the results."
-  },
-  {
-    "objectID": "hire.html#where-to-find-me",
-    "href": "hire.html#where-to-find-me",
-    "title": "About Me",
-    "section": "Where to find me",
-    "text": "Where to find me\n\n\nTwitter\n\n\nGitHub\n\n\nalex+consulting@zverianskii.com"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Alex Zverianskii",
+    "objectID": "posts/python_without_gil.html#introductions",
+    "href": "posts/python_without_gil.html#introductions",
+    "title": "Python 3.13: Four-times faster or three times slower?",
     "section": "",
-    "text": "Hey, I am building things around AI for more than 15 years in businesses of diverse sizes, ranging from 200k MAU to 100mln MAU. I’ve engineered hundreds of real-time models, prepared data for an IPO, and built three companies from the ground up, with one successful exit. Read my stories on python, data, AI and startups!"
+    "text": "Python 3.13 will be available without the Global Interpreter Lock (GIL). As a heavy user of the Python ecosystem, I’m looking forward to experimenting with it. Theoretically, this change opens up significant opportunities for faster execution, reduced memory footprint, lower latency in switching, and better communication between threads. It offers true parallelism and improved performance for multi-threaded, multi-core applications. Are we there yet?\nWhen I saw Simon Willison’s post on this topic with x4 improvements I decided to try my self."
+  },
+  {
+    "objectID": "posts/python_without_gil.html#setup",
+    "href": "posts/python_without_gil.html#setup",
+    "title": "Python 3.13: Four-times faster or three times slower?",
+    "section": "Setup:",
+    "text": "Setup:\nI’m currently using Ubuntu 24.04 (6.8.0-38-generic) along with pyenv. If you’re on the same setup, replicating this should be straightforward. First, navigate to the directory where you’ll be working. Then, install the pyenv plugin that allows us to install two versions of Python with the same name:\ngit clone https://github.com/pyenv/pyenv.git\ncd pyenv/plugins/python-build\n./install.sh\nthen install python with gil:\npython-build 3.13-dev ~/.pyenv/versions/3.13-dev_gil\nand python without gil:\nPYTHON_CONFIGURE_OPTS='--disable-gil' pyenv install 3.13-dev\nNow we have everything, let’s do some tests!"
+  },
+  {
+    "objectID": "posts/python_without_gil.html#test-1.",
+    "href": "posts/python_without_gil.html#test-1.",
+    "title": "Python 3.13: Four-times faster or three times slower?",
+    "section": "Test 1.",
+    "text": "Test 1.\nI decided to start with replication of Simon’s code from here:\nimport argparse\nimport time\nfrom concurrent.futures import ThreadPoolExecutor\nimport sysconfig\n\nprint(\"Py_GIL_DISABLED\", sysconfig.get_config_var(\"Py_GIL_DISABLED\"))\n\ndef cpu_bound_task(n):\n    \"\"\"A CPU-bound task that computes the sum of squares up to n.\"\"\"\n    return sum(i * i for i in range(n))\n\n\ndef main():\n    parser = argparse.ArgumentParser(description=\"Run a CPU-bound task with threads\")\n    parser.add_argument(\"--threads\", type=int, default=4, help=\"Number of threads\")\n    parser.add_argument(\"--tasks\", type=int, default=10, help=\"Number of tasks\")\n    parser.add_argument(\n        \"--size\", type=int, default=5000000, help=\"Task size (n for sum of squares)\"\n    )\n    args = parser.parse_args()\n\n    print(f\"Running {args.tasks} tasks of size {args.size} with {args.threads} threads\")\n\n    start_time = time.time()\n    with ThreadPoolExecutor(max_workers=args.threads) as executor:\n        list(executor.map(cpu_bound_task, [args.size] * args.tasks))\n    end_time = time.time()\n    duration = end_time - start_time\n\n    print(f\"Time with threads: {duration:.2f} seconds\")\n\n\nif __name__ == \"__main__\":\n    main()\nAs we expected:\n\n\n\n“No GIL test 1”"
+  },
+  {
+    "objectID": "posts/python_without_gil.html#test-2",
+    "href": "posts/python_without_gil.html#test-2",
+    "title": "Python 3.13: Four-times faster or three times slower?",
+    "section": "Test 2:",
+    "text": "Test 2:\nNext, I moved on to something directly using threading.\nimport threading\nimport time\nimport random\nimport sysconfig\n\nprint(\"Py_GIL_DISABLED\", sysconfig.get_config_var(\"Py_GIL_DISABLED\"))\n\n\n# Function to multiply a submatrix\n# written by LLM, we don't care if it is wrong\ndef matrix_multiply(A, B, C, start_row, end_row):\n    num_cols_B = len(B[0])\n    for i in range(start_row, end_row):\n        for j in range(num_cols_B):\n            C[i][j] = sum(A[i][k] * B[k][j] for k in range(len(A[0])))\n\n# Generate a random matrix\ndef generate_matrix(rows, cols):\n    return [[1 for _ in range(cols)] for _ in range(rows)]\n\n# Matrix dimensions\nN = 500\nA = generate_matrix(N, N)\nB = generate_matrix(N, N)\nC = [[0 for _ in range(N)] for _ in range(N)]\n\n# Number of threads\nnum_threads = 10\nthreads = []\n\n# Calculate range for each thread\nrows_per_thread = N // num_threads\n\nstart_time = time.time()\nfor i in range(num_threads):\n    start_row = i * rows_per_thread\n    end_row = (i + 1) * rows_per_thread if i != num_threads - 1 else N\n    thread = threading.Thread(target=matrix_multiply, args=(A, B, C, start_row, end_row))\n    threads.append(thread)\n    thread.start()\n\nfor thread in threads:\n    thread.join()\n\nend_time = time.time()\nprint(f\"Execution time: {end_time - start_time} seconds\")\nThe result is:\n\n\n\n“No GIL test 2”\n\n\nAs you can see, it’s three times slower. So, there are no free improvements here. You need to know how to work with no-GIL Python properly."
+  },
+  {
+    "objectID": "posts/python_without_gil.html#conclusions",
+    "href": "posts/python_without_gil.html#conclusions",
+    "title": "Python 3.13: Four-times faster or three times slower?",
+    "section": "Conclusions:",
+    "text": "Conclusions:\nPython without GIL is still in its early days and shows great promise, but it’s essential to be cautious and thoroughly test everything for your specific setup and problem."
+  },
+  {
+    "objectID": "posts/speedup_python_with_pypy.html",
+    "href": "posts/speedup_python_with_pypy.html",
+    "title": "Speed Up Python with PyPy",
+    "section": "",
+    "text": "As an Analyst, you’re likely familiar with the traditional python development cycle:\n\nCompose some code.\nRun the programmed script.\nReview the outputs (via print statements, logs, etc.)\nRefine and optimize.\n\nBut when your execution time is sluggish, this cycle becomes a frustratingly slow process.\nThere’s a widespread myth that Python, by default, is slow, and little can be done to change that. But I’m here to dispel that myth.\nThe truth is, Python’s speed can be boosted by orders of magnitude without much difficulty. The key lies in understanding how to leverage the right tools and techniques, such as PyPy, to streamline your Python development process. Why PyPy, you ask? Well, because at times, a simple shift in the manner you execute scripts can significantly speed up the process.\nThe best part is, there’s no need to spend valuable time rewriting your code. It’s essentially a free lunch.\nYou start by writing your Python code, which is then compiled into an internal format known as “Python bytecode”. Each bytecode statement is subsequently translated into a language your specific machine can comprehend, one statement at a time.\n\n\nCode\nfrom IPython.display import display, Image as dImage\nfrom PIL import Image\nimport scipy\nimport seaborn as sns\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n\n\n\nCode\npath=\"../resources/images/a5714f29-c749-419b-a73b-d48dae184a56.png\"\ndisplay(Image.open(path))\n\n\n\n\n\n\n\n\n\nAnd yes, when your code involves a loop the interpretation/translation process leads to significant repetition.\nThat’s where PyPy and its Just-In-Time (JIT) compiler come into play. Consider PyPy as a more advanced version of a bytecode executor. It’s like an observant supervisor monitoring the process. When it notices a fragment of code undergoing repeated translation, it leaps into action to optimize it.\nHow does it do this? PyPy employs tactics such as type placement and compilation to prevent unnecessary repetition, hence speeding up the execution process.\nIn essence, PyPy is a powerful tool that can help you eliminate redundancy and optimize your code’s performance. So, the next time you find your code stuck in the endless loop of translation, remember PyPy might just be the solution you need.\nHere is a quick example:\n\n\nCode\nimport random\n\nrandom.seed(1)\n\ndef main():\n    N = 1_000_000\n    res = [0]*N\n    for i in range(N):\n        dat = (random.randint(0,10) for x in range(100))\n        res[i] = sum(dat) / N\n    print(res[:10])\n\n\nIf we ran it with CPython we get:\ntime python main.py\n[0.000528, 0.000502, 0.000493, 0.000463, 0.000477, 0.000524, 0.000534, 0.000549, 0.000478, 0.000482]\npython main.py  19,25s user 0,02s system 99% cpu 19,271 total\nand the same with PyPy:\ntime python main.py\n[0.000528, 0.000502, 0.000493, 0.000463, 0.000477, 0.000524, 0.000534, 0.000549, 0.000478, 0.000482]\npython main.py  2,39s user 0,03s system 100% cpu 2,420 total\nThe results speak for themselves - we achieved a speed increase of nine times using PyPy. However, it’s important to note a couple of factors:\n\nIf your code primarily involves numpy operations, this optimization technique may not yield significant improvements.\nPyPy doesn’t fully support every element of CPython, meaning some functionalities may not work as intended.\n\nSo, what’s the takeaway here?\nIf your code is predominantly written in Python and comprises a good number of loops, you should definitely give PyPy a shot. It could result in easy gains and a considerable boost in efficiency.\nAnd the best part? The transition from CPython to PyPy is a breeze. In my experience, it took just two commands to make the switch.\nI genuinely hope that the insights shared here will prove beneficial in your coding journey, saving you precious time and making your development process more efficient.\nHappy coding!"
+  },
+  {
+    "objectID": "posts/CLT_assumptions.html",
+    "href": "posts/CLT_assumptions.html",
+    "title": "Assumtions of CLT",
+    "section": "",
+    "text": "The Central Limit Theorem serves as the foundation for many aspects of statistics, including the z-test, student’s t-test, and Welch’s t-test. But, how frequently do you consider its assumptions? Have you ever verified them?\nEven a minor deviation from these assumptions can result in a situation where the methodology becomes unusable.\nMathematical concepts are often written in a complex way that can be challenging to decipher and understand. That’s why my aim is to break down these core principles and present them to you in simple, clear English with examples.\nLet’s start with a definition from wikipedia:\nfrom IPython.display import display, Image as dImage\nfrom PIL import Image\nimport scipy\nimport seaborn as sns\nimport matplotlib.pyplot as plt\nimport numpy as np\npath=\"./resources/images/screen4.png\"\ndisplay(Image.open(path))\nit turns out 3 major assumptions are hidden in 8 symbols: “&lt;∞” and “i.i.d.”:"
+  },
+  {
+    "objectID": "posts/CLT_assumptions.html#key-takeaways",
+    "href": "posts/CLT_assumptions.html#key-takeaways",
+    "title": "Assumtions of CLT",
+    "section": "Key Takeaways:",
+    "text": "Key Takeaways:\n\nInfinite variance occurs more frequently than you might think. Stay aware.\nIt’s important to understand the data generating process, as this can provide some level of guarantee not only for independence but also for identically distributed data.\nKnow your data. This knowledge is key to effective analysis and interpretation.\n\nHappy coding!"
+  },
+  {
+    "objectID": "posts/index.html",
+    "href": "posts/index.html",
+    "title": "My notes",
+    "section": "",
+    "text": "Python 3.13 with no-gil. First impressions\n\n\n\n\n\n\npython\n\n\ncode\n\n\n\n\n\n\n\n\n\nJul 13, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nSpeed Up Python with PyPy\n\n\n\n\n\n\npython\n\n\ncode\n\n\n\n\n\n\n\n\n\nFeb 22, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nMaster Power Law To Avoid Disasters\n\n\n\n\n\n\nmath\n\n\nclt\n\n\nab\n\n\n\n\n\n\n\n\n\nFeb 21, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nAssumtions of CLT\n\n\n\n\n\n\nmath\n\n\nclt\n\n\nab\n\n\n\n\n\n\n\n\n\nMay 22, 2023\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/master_power_law.html",
@@ -70,31 +105,38 @@
     "text": "Technique #3: Limitations of Historical Data\nRealize that learning from history can be challenging if the data follows power law.\nRemember that more data often means more extreme values.\nAlways consider the possibility of more extreme events beyond what your current data shows.\nA power law is a type of heavy-tailed distribution, indicating that the likelihood of rare events is significantly higher compared to a Gaussian distribution. Depending on the circumstances, this detail may or may not be crucial. For instance, while analyzing A/B testing on button colors, it might be negligible. However, it becomes vital when modeling financial risks.\nHappy coding!"
   },
   {
-    "objectID": "posts/index.html",
-    "href": "posts/index.html",
-    "title": "My notes",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Alex Zverianskii",
     "section": "",
-    "text": "Speed Up Python with PyPy\n\n\n\n\n\n\npython\n\n\ncode\n\n\n\n\n\n\n\n\n\nFeb 22, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nMaster Power Law To Avoid Disasters\n\n\n\n\n\n\nmath\n\n\nclt\n\n\nab\n\n\n\n\n\n\n\n\n\nFeb 21, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nAssumtions of CLT\n\n\n\n\n\n\nmath\n\n\nclt\n\n\nab\n\n\n\n\n\n\n\n\n\nMay 22, 2023\n\n\n\n\n\n\nNo matching items"
+    "text": "Hey, I am building things around AI for more than 15 years in businesses of diverse sizes, ranging from 200k MAU to 100mln MAU. I’ve engineered hundreds of real-time models, prepared data for an IPO, and built three companies from the ground up, with one successful exit. Read my stories on python, data, AI and startups!"
   },
   {
-    "objectID": "posts/CLT_assumptions.html",
-    "href": "posts/CLT_assumptions.html",
-    "title": "Assumtions of CLT",
+    "objectID": "hire.html",
+    "href": "hire.html",
+    "title": "About Me",
     "section": "",
-    "text": "The Central Limit Theorem serves as the foundation for many aspects of statistics, including the z-test, student’s t-test, and Welch’s t-test. But, how frequently do you consider its assumptions? Have you ever verified them?\nEven a minor deviation from these assumptions can result in a situation where the methodology becomes unusable.\nMathematical concepts are often written in a complex way that can be challenging to decipher and understand. That’s why my aim is to break down these core principles and present them to you in simple, clear English with examples.\nLet’s start with a definition from wikipedia:\nfrom IPython.display import display, Image as dImage\nfrom PIL import Image\nimport scipy\nimport seaborn as sns\nimport matplotlib.pyplot as plt\nimport numpy as np\npath=\"./resources/images/screen4.png\"\ndisplay(Image.open(path))\nit turns out 3 major assumptions are hidden in 8 symbols: “&lt;∞” and “i.i.d.”:"
+    "text": "For the last 16 years in the industry, I have helped many companies with their data needs:\nAdditionally, I have created various projects myself, including:"
   },
   {
-    "objectID": "posts/CLT_assumptions.html#key-takeaways",
-    "href": "posts/CLT_assumptions.html#key-takeaways",
-    "title": "Assumtions of CLT",
-    "section": "Key Takeaways:",
-    "text": "Key Takeaways:\n\nInfinite variance occurs more frequently than you might think. Stay aware.\nIt’s important to understand the data generating process, as this can provide some level of guarantee not only for independence but also for identically distributed data.\nKnow your data. This knowledge is key to effective analysis and interpretation.\n\nHappy coding!"
+    "objectID": "hire.html#common-issues-faced-by-my-clients",
+    "href": "hire.html#common-issues-faced-by-my-clients",
+    "title": "About Me",
+    "section": "Common Issues Faced by My Clients:",
+    "text": "Common Issues Faced by My Clients:\n\n“Everyone claims to be data-driven. I want my team to adopt this approach too, with everything scientifically proven. What are the best tools?” You might not need them at all.\n“I’m worried that without a data strategy, we won’t be able to grow. We need to build a data lake, warehouse, and establish data stewardship.” Don’t let marketing-driven FOMO distract you from core business.\n“Vector search is the new gold standard; we need it ASAP.” No, you don’t—or at least not with the latest shiny database that overpromises.\n“Our company is only three years old, but we’ve already changed our data stack four times. Now the tech team wants to switch again.” It might be time to thoroughly evaluate the trade-offs before making another move.\n“I don’t want to be just a middleman between the user and the OpenAI API.” Let’s brainstorm.\n“We can’t create our own models; we don’t have billions of dollars and access to half of the internet’s data.” You don’t need to.\n“We change prompts but have no idea how to measure the difference without A/B testing, which takes too long and slows us down.” Effective evaluation techniques are key to speeding up development on top of LLMs; you’re not alone in facing this challenge."
   },
   {
-    "objectID": "posts/speedup_python_with_pypy.html",
-    "href": "posts/speedup_python_with_pypy.html",
-    "title": "Speed Up Python with PyPy",
-    "section": "",
-    "text": "As an Analyst, you’re likely familiar with the traditional python development cycle:\n\nCompose some code.\nRun the programmed script.\nReview the outputs (via print statements, logs, etc.)\nRefine and optimize.\n\nBut when your execution time is sluggish, this cycle becomes a frustratingly slow process.\nThere’s a widespread myth that Python, by default, is slow, and little can be done to change that. But I’m here to dispel that myth.\nThe truth is, Python’s speed can be boosted by orders of magnitude without much difficulty. The key lies in understanding how to leverage the right tools and techniques, such as PyPy, to streamline your Python development process. Why PyPy, you ask? Well, because at times, a simple shift in the manner you execute scripts can significantly speed up the process.\nThe best part is, there’s no need to spend valuable time rewriting your code. It’s essentially a free lunch.\nYou start by writing your Python code, which is then compiled into an internal format known as “Python bytecode”. Each bytecode statement is subsequently translated into a language your specific machine can comprehend, one statement at a time.\n\n\nCode\nfrom IPython.display import display, Image as dImage\nfrom PIL import Image\nimport scipy\nimport seaborn as sns\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n\n\n\nCode\npath=\"../resources/images/a5714f29-c749-419b-a73b-d48dae184a56.png\"\ndisplay(Image.open(path))\n\n\n\n\n\n\n\n\n\nAnd yes, when your code involves a loop the interpretation/translation process leads to significant repetition.\nThat’s where PyPy and its Just-In-Time (JIT) compiler come into play. Consider PyPy as a more advanced version of a bytecode executor. It’s like an observant supervisor monitoring the process. When it notices a fragment of code undergoing repeated translation, it leaps into action to optimize it.\nHow does it do this? PyPy employs tactics such as type placement and compilation to prevent unnecessary repetition, hence speeding up the execution process.\nIn essence, PyPy is a powerful tool that can help you eliminate redundancy and optimize your code’s performance. So, the next time you find your code stuck in the endless loop of translation, remember PyPy might just be the solution you need.\nHere is a quick example:\n\n\nCode\nimport random\n\nrandom.seed(1)\n\ndef main():\n    N = 1_000_000\n    res = [0]*N\n    for i in range(N):\n        dat = (random.randint(0,10) for x in range(100))\n        res[i] = sum(dat) / N\n    print(res[:10])\n\n\nIf we ran it with CPython we get:\ntime python main.py\n[0.000528, 0.000502, 0.000493, 0.000463, 0.000477, 0.000524, 0.000534, 0.000549, 0.000478, 0.000482]\npython main.py  19,25s user 0,02s system 99% cpu 19,271 total\nand the same with PyPy:\ntime python main.py\n[0.000528, 0.000502, 0.000493, 0.000463, 0.000477, 0.000524, 0.000534, 0.000549, 0.000478, 0.000482]\npython main.py  2,39s user 0,03s system 100% cpu 2,420 total\nThe results speak for themselves - we achieved a speed increase of nine times using PyPy. However, it’s important to note a couple of factors:\n\nIf your code primarily involves numpy operations, this optimization technique may not yield significant improvements.\nPyPy doesn’t fully support every element of CPython, meaning some functionalities may not work as intended.\n\nSo, what’s the takeaway here?\nIf your code is predominantly written in Python and comprises a good number of loops, you should definitely give PyPy a shot. It could result in easy gains and a considerable boost in efficiency.\nAnd the best part? The transition from CPython to PyPy is a breeze. In my experience, it took just two commands to make the switch.\nI genuinely hope that the insights shared here will prove beneficial in your coding journey, saving you precious time and making your development process more efficient.\nHappy coding!"
+    "objectID": "hire.html#hiring-options",
+    "href": "hire.html#hiring-options",
+    "title": "About Me",
+    "section": "Hiring options",
+    "text": "Hiring options\n\nPersonal Data Therapy for a Founder\nI help you become more comfortable with data decisions on a day-to-day basis.\n\n\nGroup Data Therapy for a Team\nWe conduct brainstorms and business-tech dialogues to highlight issues, find solutions, and create strategies.\n\n\nSpecific Topic Training Session\nExpand your team’s knowledge in a requested area.\n\n\nProject-Based Consulting\nI join your team for the project and take responsibility for the results."
+  },
+  {
+    "objectID": "hire.html#where-to-find-me",
+    "href": "hire.html#where-to-find-me",
+    "title": "About Me",
+    "section": "Where to find me",
+    "text": "Where to find me\n\n\nTwitter\n\n\nGitHub\n\n\nalex+consulting@zverianskii.com"
   }
 ]
