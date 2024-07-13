@@ -4744,10 +4744,12 @@ vertical-align: -.125em;
 
 <meta property="og:title" content="Python 3.13: Four-times faster or three times slower? – AZ">
 <meta property="og:description" content="Personal blog with content on data, ML, AI and startups">
+<meta property="og:image" content="https://www.zverianskii.com/img/thomas-bormans-JsTmUnHdVYQ-unsplash.jpg">
 <meta property="og:site_name" content="AZ">
 <meta name="twitter:title" content="Python 3.13: Four-times faster or three times slower? – AZ">
 <meta name="twitter:description" content="Personal blog with content on data, ML, AI and startups">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.zverianskii.com/img/thomas-bormans-JsTmUnHdVYQ-unsplash.jpg">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed">
@@ -4966,7 +4968,8 @@ vertical-align: -.125em;
 <figcaption>“No GIL test 2”</figcaption>
 </figure>
 </div>
-<p>As you can see, it’s three times slower. So, there are no free improvements here. You need to know how to work with no-GIL Python properly.</p>
+<p>As you can see, it’s three times slower. The problem is in the line <code>sum(A[i][k] * B[k][j] for k in range(len(A[0])))</code> where we access global memory, if you replace it with <code>sum(1 for k in range(len(A[0])))</code> no-gil will be six times faster!</p>
+<p>So, there are no free improvements if you just turn off gil. You need to know how to work with no-GIL Python properly.</p>
 </section>
 <section id="conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions">Conclusions:</h2>

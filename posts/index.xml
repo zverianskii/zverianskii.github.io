@@ -513,7 +513,8 @@ font-style: inherit;"> seconds"</span>)</span></code></pre></div>
 <figcaption>“No GIL test 2”</figcaption>
 </figure>
 </div>
-<p>As you can see, it’s three times slower. So, there are no free improvements here. You need to know how to work with no-GIL Python properly.</p>
+<p>As you can see, it’s three times slower. The problem is in the line <code>sum(A[i][k] * B[k][j] for k in range(len(A[0])))</code> where we access global memory, if you replace it with <code>sum(1 for k in range(len(A[0])))</code> no-gil will be six times faster!</p>
+<p>So, there are no free improvements if you just turn off gil. You need to know how to work with no-GIL Python properly.</p>
 </section>
 <section id="conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions">Conclusions:</h2>
@@ -527,7 +528,7 @@ font-style: inherit;"> seconds"</span>)</span></code></pre></div>
   <category>code</category>
   <guid>https://www.zverianskii.com/posts/python_without_gil.html</guid>
   <pubDate>Fri, 12 Jul 2024 22:00:00 GMT</pubDate>
-  <media:content url="https://www.zverianskii.com/posts" medium="image"/>
+  <media:content url="https://www.zverianskii.com/img/thomas-bormans-JsTmUnHdVYQ-unsplash.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Speed Up Python with PyPy</title>
